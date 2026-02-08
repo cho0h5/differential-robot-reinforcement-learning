@@ -101,28 +101,30 @@ class DiffRobotEnv(gym.Env):
         # Sync start marker
         self.model.geom_pos[self._start_id][0:2] = robot_pos
 
-        # Randomize goal (min 1.0m from robot)
+        # Randomize goal (min 1.2m from robot)
         while True:
-            goal_pos = self.np_random.uniform(-2.2, 2.2, size=2)
-            if np.linalg.norm(goal_pos - robot_pos) > 1.0:
+            goal_pos = self.np_random.uniform(-2.0, 2.0, size=2)
+            if np.linalg.norm(goal_pos - robot_pos) > 1.2:
                 self.model.body_pos[self._goal_body_id][0:2] = goal_pos
                 break
 
         # Randomize obstacles (no overlap with robot, goal, or each other)
         placed = []
         for obs_name in self._obstacle_geom_names:
-            obs_id = mujoco.mj_name2id(
-                self.model, mujoco.mjtObj.mjOBJ_GEOM, obs_name
-            )
+            mocap_id = self._obstacle_mocap_ids[obs_name]
             while True:
-                obs_pos = self.np_random.uniform(-2.0, 2.0, size=2)
-                if np.linalg.norm(obs_pos - robot_pos) < 0.7:
+                obs_pos = self.np_random.uniform(-1.8, 1.8, size=2)
+                # Check against robot (radius ~0.3) + obstacle (max radius ~0.5) + margin
+                if np.linalg.norm(obs_pos - robot_pos) < 1.0:
                     continue
-                if np.linalg.norm(obs_pos - goal_pos) < 0.7:
+                # Check against goal (radius 0.3) + obstacle (max radius ~0.5) + margin
+                if np.linalg.norm(obs_pos - goal_pos) < 1.0:
                     continue
-                if any(np.linalg.norm(obs_pos - p) < 0.8 for p in placed):
+                # Check against other obstacles
+                if any(np.linalg.norm(obs_pos - p) < 1.2 for p in placed):
                     continue
-                self.model.geom_pos[obs_id][0:2] = obs_pos
+
+                self.data.mocap_pos[mocap_id][0:2] = obs_pos
                 placed.append(obs_pos)
                 break
 
