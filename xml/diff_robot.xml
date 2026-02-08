@@ -1,0 +1,35 @@
+<mujoco model="diff_robot">
+    <compiler angle="degree"/>
+    <option gravity="0 0 -9.81" timestep="0.002"/>
+
+    <worldbody>
+        <light pos="0 0 3" dir="0 0 -1"/>
+        <geom name="floor" type="plane" size="5 5 0.1" rgba=".9 .9 .9 1"/>
+
+        <body name="base_link" pos="0 0 0.1">
+            <joint type="free"/>
+            <geom name="chassis" type="box" size="0.2 0.2 0.05" rgba="0.8 0.8 0.8 1"/>
+            <geom name="front_mark" type="box" size="0.02 0.1 0.01" pos="0.18 0 0.05" rgba="1 0 0 1"/>
+
+            <body name="left_wheel" pos="0 0.22 0">
+                <joint name="left_joint" axis="0 1 0" damping="0.1" armature="0.01"/>
+                <geom type="cylinder" size="0.06 0.02" rgba="0.1 0.1 0.1 1" euler="90 0 0"/>
+            </body>
+
+            <body name="right_wheel" pos="0 -0.22 0">
+                <joint name="right_joint" axis="0 1 0" damping="0.1" armature="0.01"/>
+                <geom type="cylinder" size="0.06 0.02" rgba="0.1 0.1 0.1 1" euler="90 0 0"/>
+            </body>
+
+            <body pos="0.15 0 -0.04"><joint type="ball"/><geom type="sphere" size="0.02" friction="0.01"/></body>
+            <body pos="-0.15 0 -0.04"><joint type="ball"/><geom type="sphere" size="0.02" friction="0.01"/></body>
+        </body>
+
+    </worldbody>
+
+    <actuator>
+        <velocity name="left_motor" joint="left_joint" kv="10" ctrlrange="-20 20"/>
+        <velocity name="right_motor" joint="right_joint" kv="10" ctrlrange="-20 20"/>
+    </actuator>
+
+</mujoco>
