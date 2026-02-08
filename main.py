@@ -57,9 +57,23 @@ def get_observation(model, data):
     return np.concatenate([lidar, [goal_dist, goal_angle]])
 
 
+def get_robot_geom_ids(model):
+    """Collect all geom IDs belonging to the robot body hierarchy."""
+    base_body_id = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_BODY, 'base_link')
+    robot_body_ids = {base_body_id}
+    for i in range(model.nbody):
+        bid = i
+        while bid != 0:
+            if bid == base_body_id:
+                robot_body_ids.add(i)
+                break
+            bid = model.body_parentid[bid]
+    return {i for i in range(model.ngeom) if model.geom_bodyid[i] in robot_body_ids}
+
+
 def check_collision(model, data):
-    """Check if robot chassis collides with walls or obstacles."""
-    chassis_id = mujoco.mj_name2id(model, mujoco.mjtObj.mjOBJ_GEOM, 'chassis')
+    """Check if any robot geom collides with walls or obstacles."""
+    robot_geom_ids = get_robot_geom_ids(model)
     obstacle_names = [
         'wall_front', 'wall_back', 'wall_left', 'wall_right',
         'obstacle_1', 'obstacle_2', 'obstacle_3',
@@ -71,8 +85,8 @@ def check_collision(model, data):
 
     for i in range(data.ncon):
         c = data.contact[i]
-        if (c.geom1 == chassis_id and c.geom2 in obstacle_ids) or \
-           (c.geom2 == chassis_id and c.geom1 in obstacle_ids):
+        if (c.geom1 in robot_geom_ids and c.geom2 in obstacle_ids) or \
+           (c.geom2 in robot_geom_ids and c.geom1 in obstacle_ids):
             return True
     return False
 

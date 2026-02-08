@@ -11,3 +11,5 @@ wheels/
 
 # MuJoCo logs
 MUJOCO_LOG.TXT
+logs
+models
