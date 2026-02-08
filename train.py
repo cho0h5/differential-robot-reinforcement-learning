@@ -33,7 +33,7 @@ def train(args):
         train_env,
         learning_rate=3e-4,
         n_steps=2048,
-        batch_size=64,
+        batch_size=1024,
         n_epochs=10,
         gamma=0.99,
         gae_lambda=0.95,
@@ -94,8 +94,8 @@ if __name__ == "__main__":
 
     # train
     p_train = sub.add_parser("train")
-    p_train.add_argument("--total-timesteps", type=int, default=1_000_000)
-    p_train.add_argument("--n-envs", type=int, default=4)
+    p_train.add_argument("--total-timesteps", type=int, default=10_000_000)
+    p_train.add_argument("--n-envs", type=int, default=20)
     p_train.add_argument("--eval-freq", type=int, default=10_000)
 
     # enjoy (visualize trained model)
