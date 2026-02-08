@@ -5,6 +5,15 @@
     <worldbody>
         <light pos="0 0 3" dir="0 0 -1"/>
         <geom name="floor" type="plane" size="5 5 0.1" rgba=".9 .9 .9 1"/>
+        <body name="walls" pos="0 0 0">
+            <geom name="wall_front" type="box" size="2.5 0.05 0.3" pos="0 2.5 0.3" rgba="0.5 0.5 0.5 1"/>
+            <geom name="wall_back" type="box" size="2.5 0.05 0.3" pos="0 -2.5 0.3" rgba="0.5 0.5 0.5 1"/>
+            <geom name="wall_left" type="box" size="0.05 2.5 0.3" pos="-2.5 0 0.3" rgba="0.5 0.5 0.5 1"/>
+            <geom name="wall_right" type="box" size="0.05 2.5 0.3" pos="2.5 0 0.3" rgba="0.5 0.5 0.5 1"/>
+
+            <geom name="obstacle_1" type="box" size="0.2 0.2 0.2" pos="1 1 0.2" rgba="0.2 0.5 0.8 1"/>
+            <geom name="obstacle_2" type="cylinder" size="0.1 0.2" pos="-1 1.5 0.2" rgba="0.8 0.2 0.2 1"/>
+        </body>
 
         <body name="base_link" pos="0 0 0.1">
             <joint type="free"/>
@@ -23,6 +32,35 @@
 
             <body pos="0.15 0 -0.04"><joint type="ball"/><geom type="sphere" size="0.02" friction="0.01"/></body>
             <body pos="-0.15 0 -0.04"><joint type="ball"/><geom type="sphere" size="0.02" friction="0.01"/></body>
+
+            <body name="lidar" pos="0 0 0.1">
+                <site name="s0"  zaxis="1 0 0"/>
+                <site name="s1"  zaxis="0.98 0.17 0"/> <site name="s2"  zaxis="0.94 0.34 0"/> <site name="s3"  zaxis="0.87 0.5 0"/>  <site name="s4"  zaxis="0.77 0.64 0"/> <site name="s5"  zaxis="0.64 0.77 0"/> <site name="s6"  zaxis="0.5 0.87 0"/>  <site name="s7"  zaxis="0.34 0.94 0"/> <site name="s8"  zaxis="0.17 0.98 0"/> <site name="s9"  zaxis="0 1 0"/>       <site name="s10" zaxis="-0.17 0.98 0"/> <site name="s11" zaxis="-0.34 0.94 0"/>
+                <site name="s12" zaxis="-0.5 0.87 0"/>
+                <site name="s13" zaxis="-0.64 0.77 0"/>
+                <site name="s14" zaxis="-0.77 0.64 0"/>
+                <site name="s15" zaxis="-0.87 0.5 0"/>
+                <site name="s16" zaxis="-0.94 0.34 0"/>
+                <site name="s17" zaxis="-0.98 0.17 0"/>
+                <site name="s18" zaxis="-1 0 0"/>
+                <site name="s19" zaxis="-0.98 -0.17 0"/>
+                <site name="s20" zaxis="-0.94 -0.34 0"/>
+                <site name="s21" zaxis="-0.87 -0.5 0"/>
+                <site name="s22" zaxis="-0.77 -0.64 0"/>
+                <site name="s23" zaxis="-0.64 -0.77 0"/>
+                <site name="s24" zaxis="-0.5 -0.87 0"/>
+                <site name="s25" zaxis="-0.34 -0.94 0"/>
+                <site name="s26" zaxis="-0.17 -0.98 0"/>
+                <site name="s27" zaxis="0 -1 0"/>
+                <site name="s28" zaxis="0.17 -0.98 0"/>
+                <site name="s29" zaxis="0.34 -0.94 0"/>
+                <site name="s30" zaxis="0.5 -0.87 0"/>
+                <site name="s31" zaxis="0.64 -0.77 0"/>
+                <site name="s32" zaxis="0.77 -0.64 0"/>
+                <site name="s33" zaxis="0.87 -0.5 0"/>
+                <site name="s34" zaxis="0.94 -0.34 0"/>
+                <site name="s35" zaxis="0.98 -0.17 0"/>
+            </body>
         </body>
 
     </worldbody>
@@ -31,5 +69,44 @@
         <velocity name="left_motor" joint="left_joint" kv="10" ctrlrange="-20 20"/>
         <velocity name="right_motor" joint="right_joint" kv="10" ctrlrange="-20 20"/>
     </actuator>
+
+    <sensor>
+        <rangefinder name="rf0" site="s0" cutoff="5"/>
+        <rangefinder name="rf1" site="s1" cutoff="5"/>
+        <rangefinder name="rf2" site="s2" cutoff="5"/>
+        <rangefinder name="rf3" site="s3" cutoff="5"/>
+        <rangefinder name="rf4" site="s4" cutoff="5"/>
+        <rangefinder name="rf5" site="s5" cutoff="5"/>
+        <rangefinder name="rf6" site="s6" cutoff="5"/>
+        <rangefinder name="rf7" site="s7" cutoff="5"/>
+        <rangefinder name="rf8" site="s8" cutoff="5"/>
+        <rangefinder name="rf9" site="s9" cutoff="5"/>
+        <rangefinder name="rf10" site="s10" cutoff="5"/>
+        <rangefinder name="rf11" site="s11" cutoff="5"/>
+        <rangefinder name="rf12" site="s12" cutoff="5"/>
+        <rangefinder name="rf13" site="s13" cutoff="5"/>
+        <rangefinder name="rf14" site="s14" cutoff="5"/>
+        <rangefinder name="rf15" site="s15" cutoff="5"/>
+        <rangefinder name="rf16" site="s16" cutoff="5"/>
+        <rangefinder name="rf17" site="s17" cutoff="5"/>
+        <rangefinder name="rf18" site="s18" cutoff="5"/>
+        <rangefinder name="rf19" site="s19" cutoff="5"/>
+        <rangefinder name="rf20" site="s20" cutoff="5"/>
+        <rangefinder name="rf21" site="s21" cutoff="5"/>
+        <rangefinder name="rf22" site="s22" cutoff="5"/>
+        <rangefinder name="rf23" site="s23" cutoff="5"/>
+        <rangefinder name="rf24" site="s24" cutoff="5"/>
+        <rangefinder name="rf25" site="s25" cutoff="5"/>
+        <rangefinder name="rf26" site="s26" cutoff="5"/>
+        <rangefinder name="rf27" site="s27" cutoff="5"/>
+        <rangefinder name="rf28" site="s28" cutoff="5"/>
+        <rangefinder name="rf29" site="s29" cutoff="5"/>
+        <rangefinder name="rf30" site="s30" cutoff="5"/>
+        <rangefinder name="rf31" site="s31" cutoff="5"/>
+        <rangefinder name="rf32" site="s32" cutoff="5"/>
+        <rangefinder name="rf33" site="s33" cutoff="5"/>
+        <rangefinder name="rf34" site="s34" cutoff="5"/>
+        <rangefinder name="rf35" site="s35" cutoff="5"/>
+    </sensor>
 
 </mujoco>
