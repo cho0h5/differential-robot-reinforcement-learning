@@ -71,6 +71,12 @@ class DiffRobotEnv(gym.Env):
         )
         self._obstacle_geom_names = ["obstacle_1", "obstacle_2", "obstacle_3"]
 
+        # Cache mocap body indices for obstacles
+        self._obstacle_mocap_ids = {}
+        for obs_name in self._obstacle_geom_names:
+            body_id = mujoco.mj_name2id(self.model, mujoco.mjtObj.mjOBJ_BODY, obs_name)
+            self._obstacle_mocap_ids[obs_name] = self.model.body_mocapid[body_id]
+
         self.step_count = 0
         self.prev_dist = 0.0
 
