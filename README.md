@@ -1,3 +1,6 @@
+
+https://github.com/user-attachments/assets/027660f4-75a6-4265-8bf1-c44d5cf3b1c5
+
 ```sh
 uv venv --python $(brew --prefix python@3.12)/bin/python3.12
 uv sync
