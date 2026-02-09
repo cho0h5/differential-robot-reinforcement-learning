@@ -94,7 +94,7 @@ if __name__ == "__main__":
 
     # train
     p_train = sub.add_parser("train")
-    p_train.add_argument("--total-timesteps", type=int, default=10_000_000)
+    p_train.add_argument("--total-timesteps", type=int, default=20_000_000)
     p_train.add_argument("--n-envs", type=int, default=20)
     p_train.add_argument("--eval-freq", type=int, default=10_000)
 
