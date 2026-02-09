@@ -154,13 +154,7 @@ class DiffRobotEnv(gym.Env):
         goal_reached = goal_dist < self.GOAL_THRESHOLD
         timeout = self.step_count >= self.MAX_STEPS
 
-        # Reward
-        reward = self.DISTANCE_REWARD_SCALE * (self.prev_dist - goal_dist)
-        reward += self.TIME_PENALTY
-        if goal_reached:
-            reward += self.GOAL_REWARD
-        if collision:
-            reward += self.COLLISION_PENALTY
+        reward = self._compute_reward(goal_dist, goal_reached, collision)
         self.prev_dist = goal_dist
 
         # Gymnasium uses terminated (task end) vs truncated (time limit)
@@ -222,6 +216,15 @@ class DiffRobotEnv(gym.Env):
 
         obs = np.concatenate([lidar_norm, [goal_dist_norm, goal_angle_norm]])
         return obs.astype(np.float32)
+
+    def _compute_reward(self, goal_dist, goal_reached, collision):
+        reward = self.DISTANCE_REWARD_SCALE * (self.prev_dist - goal_dist)
+        reward += self.TIME_PENALTY
+        if goal_reached:
+            reward += self.GOAL_REWARD
+        if collision:
+            reward += self.COLLISION_PENALTY
+        return reward
 
     def _check_collision(self):
         for i in range(self.data.ncon):
