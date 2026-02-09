@@ -15,7 +15,7 @@ class DiffRobotEnv(gym.Env):
     COLLISION_PENALTY = -10.0
     COLLISION_PATIENCE = 40  # terminate after N consecutive collision steps
     GOAL_REWARD = 100.0
-    TIME_PENALTY = -0.01
+    TIME_PENALTY = -0.1
     DISTANCE_REWARD_SCALE = 1.0
     LIDAR_CUTOFF = 5.0
     N_LIDAR = 36
