@@ -13,6 +13,7 @@ class DiffRobotEnv(gym.Env):
     GOAL_THRESHOLD = 0.3
     MAX_STEPS = 2000
     COLLISION_PENALTY = -10.0
+    COLLISION_PATIENCE = 40  # terminate after N consecutive collision steps
     GOAL_REWARD = 100.0
     TIME_PENALTY = -0.01
     DISTANCE_REWARD_SCALE = 1.0
@@ -79,6 +80,7 @@ class DiffRobotEnv(gym.Env):
 
         self.step_count = 0
         self.prev_dist = 0.0
+        self._collision_steps = 0
 
         # Rendering
         self.render_mode = render_mode
@@ -131,6 +133,7 @@ class DiffRobotEnv(gym.Env):
         mujoco.mj_forward(self.model, self.data)
 
         self.step_count = 0
+        self._collision_steps = 0
         self.prev_dist = self._goal_distance()
         obs = self._get_obs()
         return obs, {"goal_dist": self.prev_dist}
@@ -148,6 +151,12 @@ class DiffRobotEnv(gym.Env):
                 collision = True
         self.step_count += 1
 
+        # Track consecutive collision steps
+        if collision:
+            self._collision_steps += 1
+        else:
+            self._collision_steps = 0
+
         # Compute obs, reward, done
         obs = self._get_obs()
         goal_dist = self._goal_distance()
@@ -158,7 +167,7 @@ class DiffRobotEnv(gym.Env):
         self.prev_dist = goal_dist
 
         # Gymnasium uses terminated (task end) vs truncated (time limit)
-        terminated = goal_reached or collision
+        terminated = goal_reached or self._collision_steps >= self.COLLISION_PATIENCE
         truncated = timeout
 
         info = {
